@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Daniela 🐾</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fdf6ef;
+      --pink: #f5b8c4;
+      --pink-deep: #e88fa0;
+      --peach: #fad4b0;
+      --lavender: #c9bfdf;
+      --bear: #f0e0c8;
+      --bear-dark: #d4b896;
+      --text: #5a3e4b;
+      --heart-red: #e85c7a;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--cream);
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo con partículas flotantes */
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-heart {
+      position: absolute;
+      font-size: clamp(12px, 2vw, 22px);
+      opacity: 0.18;
+      animation: floatHeart linear infinite;
+    }
+
+    @keyframes floatHeart {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.18; }
+      90%  { opacity: 0.18; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Título */
+    .title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      color: var(--pink-deep);
+      text-align: center;
+      margin-bottom: 10px;
+      z-index: 1;
+      letter-spacing: 1px;
+      animation: fadeDown 0.8s ease both;
+    }
+    .subtitle {
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
+      color: var(--lavender);
+      text-align: center;
+      margin-bottom: 30px;
+      z-index: 1;
+      animation: fadeDown 0.8s 0.2s ease both;
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Escena del oso */
+    .scene {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeDown 1s 0.3s ease both;
+    }
+
+    /* SVG del oso */
+    .bear-wrap {
+      cursor: pointer;
+      filter: drop-shadow(0 8px 24px rgba(232,143,160,0.25));
+      transition: transform 0.2s;
+    }
+    .bear-wrap:hover { transform: scale(1.05) rotate(-1deg); }
+    .bear-wrap:active { transform: scale(0.97); }
+
+    /* Oso body bounce */
+    .bear-body { animation: bearBounce 2.4s ease-in-out infinite; transform-origin: bottom center; }
+    @keyframes bearBounce {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      30%     { transform: translateY(-8px) rotate(-1.5deg); }
+      60%     { transform: translateY(-4px) rotate(1deg); }
+    }
+
+    /* Ojos parpadeando */
+    .eye { animation: blink 4s ease-in-out infinite; transform-origin: center; }
+    @keyframes blink {
+      0%,92%,100% { transform: scaleY(1); }
+      95%          { transform: scaleY(0.08); }
+    }
+
+    /* Carta flotando */
+    .envelope-group { animation: envFloat 3s ease-in-out infinite; transform-origin: center; }
+    @keyframes envFloat {
+      0%,100% { transform: translateY(0) rotate(-1deg); }
+      50%     { transform: translateY(-6px) rotate(1deg); }
+    }
+
+    /* Corazones alrededor del oso */
+    .mini-heart { animation: heartPop ease-in-out infinite; }
+    @keyframes heartPop {
+      0%,100% { opacity: 0.7; transform: scale(1); }
+      50%     { opacity: 1; transform: scale(1.25); }
+    }
+
+    /* Etiqueta "¡Léeme!" */
+    .read-label {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1rem, 3.5vw, 1.4rem);
+      color: #fff;
+      background: var(--heart-red);
+      padding: 6px 22px;
+      border-radius: 50px;
+      margin-top: 14px;
+      box-shadow: 0 4px 14px rgba(232,92,122,0.35);
+      animation: pulse 1.5s ease-in-out infinite;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 4px 14px rgba(232,92,122,0.35); transform: scale(1); }
+      50%      { box-shadow: 0 6px 22px rgba(232,92,122,0.55); transform: scale(1.05); }
+    }
+
+    /* ========== OVERLAY CARTA ========== */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      background: rgba(253,246,239,0.75);
+      backdrop-filter: blur(8px);
+      animation: overlayIn 0.4s ease both;
+    }
+    .overlay.active { display: flex; }
+    @keyframes overlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .letter-card {
+      background: #fff9f5;
+      border: 2.5px solid var(--pink);
+      border-radius: 24px;
+      max-width: min(92vw, 520px);
+      width: 100%;
+      padding: clamp(24px, 5vw, 48px) clamp(20px, 6vw, 44px);
+      position: relative;
+      box-shadow: 0 16px 60px rgba(232,143,160,0.22), 0 2px 8px rgba(200,150,170,0.1);
+      animation: cardPop 0.45s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes cardPop {
+      from { opacity: 0; transform: scale(0.7) translateY(40px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .letter-deco-top {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      animation: heartBeat 1.2s ease-in-out infinite;
+    }
+    @keyframes heartBeat {
+      0%,100% { transform: scale(1); }
+      15%     { transform: scale(1.22); }
+      30%     { transform: scale(1); }
+      45%     { transform: scale(1.14); }
+    }
+
+    .letter-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      color: var(--pink-deep);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .letter-body {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+      color: var(--text);
+      line-height: 1.8;
+      text-align: left;
+    }
+    .letter-body p { margin-bottom: 12px; }
+
+    .letter-sign {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1rem, 3vw, 1.15rem);
+      color: var(--pink-deep);
+      margin-top: 20px;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: var(--pink);
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .close-btn:hover { background: var(--pink-deep); transform: rotate(90deg); }
+
+    /* Confetti al abrir */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 200;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+    }
+
+    /* Audio info */
+    .audio-info {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: #bba;
+      text-align: center;
+      z-index: 1;
+      animation: fadeDown 1s 0.8s ease both;
+    }
+    .audio-info a { color: var(--pink-deep); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Fondo corazones -->
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <!-- Música de fondo -->
+  <!-- 
+    INSTRUCCIONES PARA GITHUB:
+    Sube un archivo de música (ej: cancion.mp3) al mismo repositorio
+    y cambia el src abajo. Puede ser cualquier .mp3 suave.
+  -->
+  <audio id="bgMusic" loop autoplay>
+    <source src="cancion.mp3" type="audio/mpeg"/>
+  </audio>
+
+  <h1 class="title">✨ Algo especial para ti ✨</h1>
+  <p class="subtitle">toca al osito para abrir tu carta 🐻💌</p>
+
+  <div class="scene">
+    <!-- SVG Oso animado -->
+    <svg class="bear-wrap" id="bearBtn" width="280" height="300" viewBox="0 0 280 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="button" aria-label="Abrir carta">
+      <g class="bear-body">
+        <!-- Sombra -->
+        <ellipse cx="140" cy="292" rx="55" ry="10" fill="#d4b8d0" opacity="0.3"/>
+
+        <!-- Cuerpo -->
+        <ellipse cx="140" cy="200" rx="72" ry="80" fill="#f0e0c8"/>
+        <ellipse cx="140" cy="200" rx="72" ry="80" stroke="#c8a882" stroke-width="2.5" fill="none"/>
+
+        <!-- Panza -->
+        <ellipse cx="140" cy="215" rx="42" ry="48" fill="#faebd7" opacity="0.7"/>
+
+        <!-- Pata izq -->
+        <ellipse cx="90" cy="268" rx="22" ry="14" fill="#e8d0b0"/>
+        <ellipse cx="90" cy="268" rx="22" ry="14" stroke="#c8a882" stroke-width="2"/>
+
+        <!-- Pata der -->
+        <ellipse cx="190" cy="268" rx="22" ry="14" fill="#e8d0b0"/>
+        <ellipse cx="190" cy="268" rx="22" ry="14" stroke="#c8a882" stroke-width="2"/>
+
+        <!-- Brazo izq sosteniendo carta -->
+        <ellipse cx="84" cy="208" rx="18" ry="28" fill="#e8d0b0" transform="rotate(-15 84 208)"/>
+        <ellipse cx="84" cy="208" rx="18" ry="28" stroke="#c8a882" stroke-width="2" fill="none" transform="rotate(-15 84 208)"/>
+
+        <!-- Brazo der sosteniendo carta -->
+        <ellipse cx="196" cy="208" rx="18" ry="28" fill="#e8d0b0" transform="rotate(15 196 208)"/>
+        <ellipse cx="196" cy="208" rx="18" ry="28" stroke="#c8a882" stroke-width="2" fill="none" transform="rotate(15 196 208)"/>
+
+        <!-- Cabeza -->
+        <circle cx="140" cy="128" r="68" fill="#f0e0c8"/>
+        <circle cx="140" cy="128" r="68" stroke="#c8a882" stroke-width="2.5" fill="none"/>
+
+        <!-- Oreja izq -->
+        <circle cx="87" cy="76" r="22" fill="#f0e0c8"/>
+        <circle cx="87" cy="76" r="22" stroke="#c8a882" stroke-width="2.5" fill="none"/>
+        <circle cx="87" cy="76" r="13" fill="#f5c0c8"/>
+
+        <!-- Oreja der -->
+        <circle cx="193" cy="76" r="22" fill="#f0e0c8"/>
+        <circle cx="193" cy="76" r="22" stroke="#c8a882" stroke-width="2.5" fill="none"/>
+        <circle cx="193" cy="76" r="13" fill="#f5c0c8"/>
+
+        <!-- Mejillas sonrojadas -->
+        <ellipse cx="108" cy="148" rx="16" ry="10" fill="#f5b8c4" opacity="0.6"/>
+        <ellipse cx="172" cy="148" rx="16" ry="10" fill="#f5b8c4" opacity="0.6"/>
+
+        <!-- Hocico -->
+        <ellipse cx="140" cy="150" rx="22" ry="17" fill="#faebd7"/>
+        <ellipse cx="140" cy="150" rx="22" ry="17" stroke="#c8a882" stroke-width="1.5" fill="none"/>
+
+        <!-- Nariz -->
+        <ellipse cx="140" cy="143" rx="8" ry="6" fill="#7a5a6a"/>
+
+        <!-- Boca sonriente -->
+        <path d="M132 154 Q140 163 148 154" stroke="#7a5a6a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+        <!-- Ojos -->
+        <g class="eye">
+          <circle cx="116" cy="122" r="9" fill="#fff"/>
+          <circle cx="118" cy="122" r="5.5" fill="#4a3040"/>
+          <circle cx="120" cy="120" r="2" fill="#fff"/>
+        </g>
+        <g class="eye">
+          <circle cx="164" cy="122" r="9" fill="#fff"/>
+          <circle cx="166" cy="122" r="5.5" fill="#4a3040"/>
+          <circle cx="168" cy="120" r="2" fill="#fff"/>
+        </g>
+
+        <!-- Carta / sobre -->
+        <g class="envelope-group">
+          <!-- Sobre -->
+          <rect x="92" y="185" width="96" height="66" rx="8" fill="#fce4ec" stroke="#e888a0" stroke-width="2"/>
+          <!-- Solapa -->
+          <path d="M92 193 L140 222 L236 193" stroke="#e888a0" stroke-width="2" fill="none"/>
+          <!-- Corazón en la carta -->
+          <path d="M140 213 C140 213 128 204 128 197 C128 193 131 191 134 191 C137 191 140 194 140 194 C140 194 143 191 146 191 C149 191 152 193 152 197 C152 204 140 213 140 213Z" fill="#e85c7a"/>
+        </g>
+
+        <!-- Corazones decorativos mini -->
+        <text class="mini-heart" x="40" y="100" font-size="16" fill="#c9bfdf" style="animation-duration:2.1s;animation-delay:0s">♥</text>
+        <text class="mini-heart" x="220" y="90" font-size="12" fill="#f5b8c4" style="animation-duration:1.8s;animation-delay:0.4s">♥</text>
+        <text class="mini-heart" x="230" y="130" font-size="10" fill="#fad4b0" style="animation-duration:2.4s;animation-delay:0.9s">♥</text>
+        <text class="mini-heart" x="28" y="145" font-size="11" fill="#f5b8c4" style="animation-duration:2s;animation-delay:0.6s">♥</text>
+        <text class="mini-heart" x="55" y="60" font-size="9" fill="#fad4b0" style="animation-duration:2.8s;animation-delay:1.2s">♥</text>
+      </g>
+    </svg>
+
+    <span class="read-label" id="readLabel">💌 ¡Léeme!</span>
+  </div>
+
+  <p class="audio-info">🎵 Para la música: sube un <code>.mp3</code> a tu repo de GitHub con el nombre <code>cancion.mp3</code></p>
+
+  <!-- Overlay con carta -->
+  <div class="overlay" id="overlay">
+    <div class="letter-card" id="letterCard">
+      <button class="close-btn" id="closeBtn" aria-label="Cerrar">✕</button>
+      <div class="letter-deco-top">💌</div>
+      <div class="letter-title">Querida Daniela</div>
+      <div class="letter-body">
+        <p>Sé que hoy fue un día difícil y que has estado a full desde temprano... pero también sé, aunque sea de lejos, que lo diste todo y que salió bien. 💪🏼</p>
+        <p>Espero de verdad que estés un poquito mejor ahora. Mereces descansar, relajarte y respirar hondo. Te lo ganaste.</p>
+        <p>Solo quiero que sepas que cuentas conmigo para cualquier cosa, en serio. Para lo grande y para lo pequeño. Sabes el cariño que te tengo, ¿no? Ver que sonríes es suficiente para recordarme que puedo dar más de mí mismo. 🌸</p>
+        <p>Eres muy linda, Dani, y no solo por fuera, sino por todo lo que eres. Ojalá tus papás estén mejor muy pronto, y que en medio de todo esto recuerdes que <strong>no estás sola</strong>. 🤍</p>
+        <p>Por favor cuídate mucho: come a tus horas, descansa cuando puedas, y avísame si algo no está bien o si necesitas aunque sea alguien que te escuche. Me preocupas muchísimo y necesito saber que estás bien. 🐾</p>
+        <p>Mándame un mensajito cuando puedas y cuéntame cómo estás. Siempre.</p>
+      </div>
+      <div class="letter-sign">Con todo el cariño,<br/>🦝 un mapache que siempre quiere verte sonreír</div>
+    </div>
+  </div>
+
+  <script>
+    // ---- Fondo corazones ----
+    const bgHearts = document.getElementById('bgHearts');
+    const heartEmojis = ['♥','🤍','💛','💜','🩵'];
+    for (let i = 0; i < 28; i++) {
+      const el = document.createElement('span');
+      el.className = 'bg-heart';
+      el.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (12 + Math.random() * 18) + 's';
+      el.style.animationDelay = (Math.random() * 18) + 's';
+      bgHearts.appendChild(el);
+    }
+
+    // ---- Música autoplay ----
+    const music = document.getElementById('bgMusic');
+    music.volume = 0.35;
+    // Algunos navegadores bloquean autoplay; intentamos al primer toque
+    document.addEventListener('click', () => { music.play().catch(()=>{}); }, { once: true });
+
+    // ---- Abrir carta ----
+    const overlay   = document.getElementById('overlay');
+    const bearBtn   = document.getElementById('bearBtn');
+    const readLabel = document.getElementById('readLabel');
+    const closeBtn  = document.getElementById('closeBtn');
+
+    function spawnConfetti() {
+      const colors = ['#f5b8c4','#c9bfdf','#fad4b0','#e85c7a','#fff'];
+      for (let i = 0; i < 60; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.left = (20 + Math.random() * 60) + 'vw';
+        c.style.top = '-5vh';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.width = (8 + Math.random() * 10) + 'px';
+        c.style.height = (8 + Math.random() * 10) + 'px';
+        c.style.animationDuration = (2 + Math.random() * 3) + 's';
+        c.style.animationDelay = (Math.random() * 0.8) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+      }
+    }
+
+    function openLetter() {
+      overlay.classList.add('active');
+      spawnConfetti();
+      music.play().catch(()=>{});
+    }
+
+    function closeLetter() {
+      overlay.classList.remove('active');
+    }
+
+    bearBtn.addEventListener('click', openLetter);
+    readLabel.addEventListener('click', openLetter);
+    closeBtn.addEventListener('click', closeLetter);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeLetter(); });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLetter(); });
+  </script>
+</body>
+</html>
