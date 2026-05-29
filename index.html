@@ -12,10 +12,9 @@
       --cream: #fdf6ef;
       --pink: #f5b8c4;
       --pink-deep: #e88fa0;
-      --peach: #fad4b0;
-      --lavender: #c9bfdf;
       --text: #5a3e4b;
       --heart-red: #e85c7a;
+      --lavender: #c9bfdf;
     }
 
     html, body {
@@ -35,7 +34,7 @@
       padding: 20px 16px;
     }
 
-    /* Fondo corazones flotantes */
+    /* Fondo corazones */
     .bg-hearts {
       position: fixed;
       inset: 0;
@@ -56,7 +55,6 @@
       100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Título */
     .title {
       font-family: 'Caveat', cursive;
       font-size: clamp(1.4rem, 6vw, 2.6rem);
@@ -79,7 +77,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Escena */
     .scene {
       position: relative;
       z-index: 1;
@@ -89,18 +86,16 @@
       animation: fadeDown 1s 0.3s ease both;
     }
 
-    /* SVG oso — responsive con max-width */
+    /* Oso responsive */
     .bear-wrap {
       cursor: pointer;
       width: min(75vw, 260px);
       height: auto;
       display: block;
       filter: drop-shadow(0 8px 20px rgba(232,143,160,0.28));
-      transition: transform 0.2s;
+      touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
-    .bear-wrap:hover  { transform: scale(1.05) rotate(-1deg); }
-    .bear-wrap:active { transform: scale(0.96); }
 
     .bear-body { animation: bearBounce 2.4s ease-in-out infinite; transform-origin: bottom center; }
     @keyframes bearBounce {
@@ -127,21 +122,28 @@
       50%     { opacity: 1; transform: scale(1.25); }
     }
 
-    /* Botón léeme */
+    /* BOTÓN LÉEME — button real para máxima compatibilidad Android */
     .read-label {
       font-family: 'Caveat', cursive;
-      font-size: clamp(1.1rem, 4.5vw, 1.45rem);
+      font-size: clamp(1.15rem, 5vw, 1.5rem);
       color: #fff;
       background: var(--heart-red);
-      padding: 8px 28px;
+      border: none;
+      outline: none;
+      padding: 14px 40px;
       border-radius: 50px;
-      margin-top: 16px;
+      margin-top: 18px;
       box-shadow: 0 4px 14px rgba(232,92,122,0.38);
       animation: pulse 1.5s ease-in-out infinite;
       cursor: pointer;
       user-select: none;
-      display: inline-block;
+      display: block;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-width: 170px;
+      min-height: 54px;
+      /* Evitar que la animación "robe" el tap en Android */
+      will-change: transform;
     }
     @keyframes pulse {
       0%,100% { box-shadow: 0 4px 14px rgba(232,92,122,0.35); transform: scale(1); }
@@ -158,12 +160,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(253,246,239,0.78);
+      background: rgba(253,246,239,0.82);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      transition: opacity 0.35s ease, visibility 0.35s ease;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
       padding: 16px;
       overflow-y: auto;
+      touch-action: manipulation;
     }
     .overlay.active {
       visibility: visible;
@@ -176,28 +179,26 @@
       border-radius: 24px;
       width: 100%;
       max-width: 500px;
-      max-height: 85vh;
+      max-height: 82vh;
       overflow-y: auto;
-      padding: clamp(22px, 5vw, 44px) clamp(18px, 6vw, 40px);
+      padding: clamp(20px, 5vw, 44px) clamp(18px, 6vw, 40px);
       position: relative;
       box-shadow: 0 16px 60px rgba(232,143,160,0.22);
-      transform: scale(0.75) translateY(30px);
+      transform: scale(0.8) translateY(30px);
       transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
-      /* scroll suave en iOS */
       -webkit-overflow-scrolling: touch;
     }
     .overlay.active .letter-card {
       transform: scale(1) translateY(0);
     }
 
-    /* scrollbar bonito */
     .letter-card::-webkit-scrollbar { width: 5px; }
     .letter-card::-webkit-scrollbar-track { background: transparent; }
     .letter-card::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
 
     .letter-deco-top {
       text-align: center;
-      font-size: 1.9rem;
+      font-size: 2rem;
       margin-bottom: 10px;
       animation: heartBeat 1.2s ease-in-out infinite;
     }
@@ -235,23 +236,25 @@
     }
 
     .close-btn {
-      position: sticky;
-      top: 0;
-      float: right;
+      position: absolute;
+      top: 14px;
+      right: 14px;
       background: var(--pink);
       border: none;
       border-radius: 50%;
-      width: 34px; height: 34px;
-      font-size: 1rem;
+      width: 38px;
+      height: 38px;
+      font-size: 1.1rem;
       cursor: pointer;
       color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
       flex-shrink: 0;
       z-index: 10;
-      margin-bottom: 8px;
     }
-    .close-btn:hover  { background: #e85c7a; transform: rotate(90deg); }
 
     /* Confetti */
     .confetti-piece {
@@ -278,7 +281,7 @@
   <p class="subtitle">toca al osito para abrir tu carta 🐻💌</p>
 
   <div class="scene">
-    <svg class="bear-wrap" id="bearBtn" viewBox="0 0 280 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="button" aria-label="Abrir carta">
+    <svg class="bear-wrap" id="bearBtn" viewBox="0 0 280 300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Osito con carta">
       <g class="bear-body">
         <ellipse cx="140" cy="292" rx="55" ry="10" fill="#d4b8d0" opacity="0.3"/>
         <ellipse cx="140" cy="200" rx="72" ry="80" fill="#f0e0c8"/>
@@ -329,13 +332,14 @@
       </g>
     </svg>
 
-    <span class="read-label" id="readLabel">💌 ¡Léeme!</span>
+    <!-- button real en vez de span para Android -->
+    <button class="read-label" id="readLabel" type="button">💌 ¡Léeme!</button>
   </div>
 
   <!-- Overlay carta -->
   <div class="overlay" id="overlay">
     <div class="letter-card" id="letterCard">
-      <button class="close-btn" id="closeBtn" aria-label="Cerrar">✕</button>
+      <button class="close-btn" id="closeBtn" type="button" aria-label="Cerrar">✕</button>
       <div class="letter-deco-top">💌</div>
       <div class="letter-title">Querida Daniela</div>
       <div class="letter-body">
@@ -364,16 +368,14 @@
       bgHearts.appendChild(el);
     }
 
-    // Música — se activa al primer toque (requerido por móviles)
+    // Música
     const music = document.getElementById('bgMusic');
     music.volume = 0.35;
     function tryPlay() { music.play().catch(() => {}); }
-    document.addEventListener('touchstart', tryPlay, { once: true });
-    document.addEventListener('click', tryPlay, { once: true });
 
     // Confetti
     function spawnConfetti() {
-      const colors = ['#f5b8c4','#c9bfdf','#fad4b0','#e85c7a','#fff8'];
+      const colors = ['#f5b8c4','#c9bfdf','#fad4b0','#e85c7a','#fff'];
       for (let i = 0; i < 55; i++) {
         const c = document.createElement('div');
         c.className = 'confetti-piece';
@@ -390,29 +392,41 @@
       }
     }
 
-    // Overlay
-    const overlay   = document.getElementById('overlay');
-    const bearBtn   = document.getElementById('bearBtn');
-    const readLabel = document.getElementById('readLabel');
-    const closeBtn  = document.getElementById('closeBtn');
-    const card      = document.getElementById('letterCard');
+    const overlay  = document.getElementById('overlay');
+    const card     = document.getElementById('letterCard');
+    const readBtn  = document.getElementById('readLabel');
+    const bearBtn  = document.getElementById('bearBtn');
+    const closeBtn = document.getElementById('closeBtn');
 
-    function openLetter() {
+    function openLetter(e) {
+      e.preventDefault();
+      e.stopPropagation();
       overlay.classList.add('active');
       spawnConfetti();
       tryPlay();
     }
-    function closeLetter() {
+
+    function closeLetter(e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       overlay.classList.remove('active');
     }
 
-    bearBtn.addEventListener('click', openLetter);
-    readLabel.addEventListener('click', openLetter);
-    closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeLetter(); });
+    // Botón principal — touchstart para respuesta inmediata en Android
+    readBtn.addEventListener('touchstart', openLetter, { passive: false });
+    readBtn.addEventListener('click', openLetter);
 
-    // Cerrar al tocar fuera de la carta
-    overlay.addEventListener('click', e => { if (!card.contains(e.target)) closeLetter(); });
-    overlay.addEventListener('touchend', e => { if (!card.contains(e.target)) closeLetter(); });
+    // Oso también abre
+    bearBtn.addEventListener('touchstart', openLetter, { passive: false });
+    bearBtn.addEventListener('click', openLetter);
+
+    // Cerrar
+    closeBtn.addEventListener('touchstart', closeLetter, { passive: false });
+    closeBtn.addEventListener('click', closeLetter);
+
+    // Tocar fuera de la carta cierra
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) closeLetter();
+    });
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLetter(); });
   </script>
